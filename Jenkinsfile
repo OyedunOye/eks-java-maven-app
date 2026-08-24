@@ -3,7 +3,7 @@
 library identifier: 'jenkins-shared-lib@master', retriever: modernSCM(
     [$class: 'GitSCMSource',
     remote: 'https://github.com/OyedunOye/jenkins-shared-library.git',
-    credentialsID: 'd333e4b1-eb71-43bf-8485-7f068c14b823'
+    credentialsId: 'd333e4b1-eb71-43bf-8485-7f068c14b823'
     ]
 )
 
