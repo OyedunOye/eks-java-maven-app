@@ -1,6 +1,6 @@
 services:
   java-maven-app:
-    image: oluwasade/demo-app:jma-2.0.0
+    image: ${IMAGE}
     container_name: java-maven-app
     ports:
       - "8080:8080"
