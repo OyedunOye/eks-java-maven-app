@@ -1,0 +1,16 @@
+services:
+  java-maven-app:
+    image: oluwasade/demo-app:jma-2.0.0
+    container_name: java-maven-app
+    ports:
+      - "8080:8080"
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+  
