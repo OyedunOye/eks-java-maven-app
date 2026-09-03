@@ -59,16 +59,16 @@ pipeline {
         }
 
         stage("deploy") {
+             environment {
+                AWS_ACCESS_KEY_ID = credentials('jenkins-aws-access-key-id')
+                AWS_SECRET_ACCESS_KEY = credentials('jenkins-secret-access-key')
+                APP_NAME = 'java-maven-app'
+            }
             steps {
                 script {
-                    echo 'deploying docker image to EC2'
-                    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}"
-                    def ec2Instance = "ec2-user@13.218.153.53"
-                    sshagent(credentials: ['ec2-server-key'], executable: '') {
-                        sh "scp docker-compose.yaml ${ec2Instance}:/home/ec2-user"
-                        sh "scp server-cmds.sh ${ec2Instance}:/home/ec2-user"
-                        sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
-                    }
+                    echo 'deploying docker image to AWS EKS cluster'
+                    sh 'envsubst < kubernetes/deployment.yaml | kubectl apply -f -'
+                    sh 'envsubst < kubernetes/service.yaml | kubectl apply -f -'
                 }
             }
         }
@@ -81,7 +81,7 @@ pipeline {
                         sh 'git config --global user.email "jenkins@example.com"'
                         sh 'git config --global user.name "Jenkins"'
 
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/OyedunOye/aws-java-maven-app.git"
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/OyedunOye/eks-java-maven-app.git"
                         sh 'git add .'
                         sh 'git commit -m "ci:version bump from successful Jenkins build"'
                         sh "git push origin HEAD:${BRANCH_NAME}"
