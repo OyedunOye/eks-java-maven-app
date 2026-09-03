@@ -33,7 +33,7 @@ pipeline {
                     sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\${parsedVersion.majorVersion}.\\${parsedVersion.minorVersion}.\\${parsedVersion.nextIncrementalVersion} versions:commit'
                     def matcher = readFile('pom.xml')=~'<version>(.+)</version>'
                     def version = matcher[0][1]
-                    env.IMAGE_NAME = "oluwasade/demo-app:jma-$version-$BUILD_NUMBER"
+                    env.IMAGE_NAME = "207567759818.dkr.ecr.us-east-1.amazonaws.com/java-maven-app:$version-$BUILD_NUMBER"
                 }
             }
         }
@@ -51,9 +51,11 @@ pipeline {
             steps {
                 script {
                     echo "Building the docker image..."
-                    buildImage(env.IMAGE_NAME)
-                    dockerLogin()
-                    pushImage(env.IMAGE_NAME)
+                    withCredentials([usernamePassword(credentialsId: 'ecr-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                        sh "docker build -t ${IMAGE_NAME} ."
+                        sh "echo $PASS | docker login -u $USER --password-stdin 207567759818.dkr.ecr.us-east-1.amazonaws.com"
+                        sh "docker push ${IMAGE_NAME}"
+                    }
                 }
             }
         }
