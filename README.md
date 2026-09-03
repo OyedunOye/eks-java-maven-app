@@ -35,3 +35,7 @@ imagePullSecrets:
     - name: aws-registry-key
 ```
 - Commit all changes to git and execute Jenkins pipeline.
+## Screenshots
+![Jenkins pipeline successful branch builds](https://res.cloudinary.com/dpav6x91z/image/upload/v1788449166/Screenshot_2026-09-03_172213_npbgrz.png)
+![deploy resources created in EKS](https://res.cloudinary.com/dpav6x91z/image/upload/v1788449169/Screenshot_2026-09-03_172353_tzjmvh.png)
+![ecr java-maven-app repo](https://res.cloudinary.com/dpav6x91z/image/upload/v1788449171/Screenshot_2026-09-03_172500_t61syl.png)
